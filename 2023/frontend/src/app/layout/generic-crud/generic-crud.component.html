@@ -1,0 +1,44 @@
+<div class="p-3">
+  <mat-card>
+    <h2>{{genericCrud.title}}</h2>
+    <ng-container *ngIf="listMode else formContent">
+      <table mat-table [dataSource]="objects" class="mat-elevation-z8">
+        <ng-container *ngFor="let column of genericCrud.columns">
+          <ng-container [matColumnDef]="column.dataField">
+            <th mat-header-cell *matHeaderCellDef> {{column.caption}}</th>
+            <td mat-cell *matCellDef="let element"> {{element[column.dataField]}} </td>
+          </ng-container>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="primary" (click)="onEdit(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="onDelete(element)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </ng-container>
+    <ng-template #formContent>
+      <ng-content></ng-content>
+      <div class="row">
+        <div class="offset-md-8 col-md-2 mb-3">
+          <button class="button-mat" mat-stroked-button color="primary" (click)="save()">Salvar</button>
+        </div>
+        <div class="col-md-2">
+          <button class="button-mat" mat-stroked-button color="warn" (click)="cancel()">Cancelar</button>
+        </div>
+      </div>
+    </ng-template>
+  </mat-card>
+  <ng-container *ngIf="listMode">
+    <button class="fabButton" mat-fab color="primary" (click)="onAdd()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </ng-container>
+</div>
